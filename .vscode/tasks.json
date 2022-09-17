@@ -1,0 +1,57 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "options": {
+        "cwd": "${workspaceFolder}/build"
+    },
+    "tasks": [
+        {
+            "label": "cmake",
+            "type": "shell",
+            "command": "cmake",
+            "args": [".."]
+        },
+        {
+            "label": "make",
+            "type": "shell",
+            "command": "make",
+        },
+        {
+            //对应launch.json里的"preLaunchTask": "Build"
+            //调试前执行cmake和make两条终端命令实现自动编译
+            "label": "Build",
+            "dependsOrder": "sequence",
+            "dependsOn":[
+                "cmake",
+                "make"
+            ],
+        },
+        {
+            "type": "shell",
+            "label": "myTask",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "-std=c++17",
+                "-Wall", // 显示所有警告
+                "-Wextra", // 显示额外警告
+                "-Wfatal-errors" // 遇到第一个错误就停止，减少查找错误时间
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Generated task by Debugger"
+        }
+    ]
+}
